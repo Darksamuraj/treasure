@@ -9,12 +9,57 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\SignupForm;
 
 class SiteController extends Controller
 {
     /**
      * {@inheritdoc}
      */
+	 
+/*public function actionAddAdmin() {
+    $model = User::find()->where(['username' => 'admin'])->one();
+    if (empty($model)) {
+        $user = new User();
+        $user->username = 'admin';
+        $user->email = 'admin@yoursite.ru';
+        $user->setPassword('admin');
+        $user->generateAuthKey();
+        if ($user->save()) {
+            echo 'good';
+        }
+    }
+}*/
+public function actionSignup()
+    {
+        $model = new SignupForm();
+ 
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        }
+ 
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
+    }
+	
+public function actionAddAdmin() {
+    $model = User::find()->where(['username' => 'admin'])->one();
+    if (empty($model)) {
+        $user = new User();
+        $user->username = 'admin';
+        $user->email = 'admin@yoursite.ru';
+        $user->setPassword('admin');
+        $user->generateAuthKey();
+        if ($user->save()) {
+            echo 'good';
+        }
+    }
+}
     public function behaviors()
     {
         return [
